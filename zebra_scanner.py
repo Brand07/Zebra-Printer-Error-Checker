@@ -14,14 +14,13 @@ import time
 toaster = WindowsToaster("Zebra Printer Alert!")
 newToast = Toast()
 
+# Dictionary of printers based on their IP.
+# More can be added here.
 printers = {
     "Accessory DSG": "http://10.10.113.236/",
     "Club DSG": "http://10.10.113.251/"
 }
 
-
-acc_dsg = "http://10.10.113.236/"
-club_dsg = "http://10.10.113.251/"
 
 
 driver = webdriver.Firefox()
