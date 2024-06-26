@@ -40,7 +40,7 @@ def check_for_printer_errors(printer, printer_name):
         return False
     driver.quit()
 
-check_for_printer_errors(acc_dsg, "DSG Printer")
+check_for_printer_errors(acc_dsg, "Accessory DSG Printer")
 
         
 
