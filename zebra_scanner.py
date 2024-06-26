@@ -9,6 +9,7 @@ from selenium.webdriver.common.by import By
 #from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import TimeoutException
 from windows_toasts import Toast, WindowsToaster
+import time
 
 toaster = WindowsToaster("Zebra Printer Alert!")
 newToast = Toast()
@@ -41,6 +42,7 @@ def check_for_printer_errors(printer, printer_name):
     except TimeoutException:
         print(f"Connection to {printer_name} failed. Unable to locate serial number.")
         return False
+    time.sleep(2)
     
     try:
         # Check for any errors
@@ -52,12 +54,14 @@ def check_for_printer_errors(printer, printer_name):
             newToast.text_fields = [f"Error on {printer_name}: {status_message}"]
             toaster.show_toast(newToast)
             return True
-    except:
+    except:  # noqa: E722
         print(f"No errors found on {printer_name}.")
         return False
-    driver.quit()
 
-check_for_printer_errors(acc_dsg, "Accessory DSG Printer")
+for printer_name, printer_url in printers.items():
+    check_for_printer_errors(printer_url, printer_name)
+
+driver.quit()
 
         
 
