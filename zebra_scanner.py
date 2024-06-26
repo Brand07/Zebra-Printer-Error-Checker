@@ -8,15 +8,30 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 #from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import TimeoutException
+from windows_toasts import Toast, WindowsToaster
+
+toaster = WindowsToaster("Zebra Printer Alert!")
+newToast = Toast()
+
+printers = {
+    "Accessory DSG": "http://10.10.113.236/",
+    "Club DSG": "http://10.10.113.251/"
+}
 
 
 acc_dsg = "http://10.10.113.236/"
+club_dsg = "http://10.10.113.251/"
 
 
 driver = webdriver.Firefox()
 driver.set_window_size(1024, 768) # Set the window size to 1920x1080
 
 def check_for_printer_errors(printer, printer_name):
+    """
+    Loads the printer's internal webpage and checks for any errors.
+    If the status message is anything but "Status: READY",
+    the function will print the error message and return True.
+    """
     try:
         driver.get(printer)
         # Check for the Serial number
@@ -34,6 +49,8 @@ def check_for_printer_errors(printer, printer_name):
             print("No errors found on printer.")
         else:
             print(f"Error found on {printer_name}: {status_message}")
+            newToast.text_fields = [f"Error on {printer_name}: {status_message}"]
+            toaster.show_toast(newToast)
             return True
     except:
         print(f"No errors found on {printer_name}.")
